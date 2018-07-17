@@ -1,0 +1,22 @@
+---
+output:
+  md_document:
+    variant: markdown_github
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "README-"
+)
+```
+
+# FARSFunctions
+
+The goal of FARSFunctions is to provide functions to analyse FARS dataset.  
+Please see vignette "Introduction_to_FARS_functions" for additional information.
+
+

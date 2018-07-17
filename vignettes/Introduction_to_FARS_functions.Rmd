@@ -1,0 +1,40 @@
+---
+title: "Introduction to FARS functions"
+author: "Sandeep B M"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+library(FARSFunctions)
+```
+
+FARS is a nationwide census providing NHTSA, Congress and the American public yearly data regarding fatal injuries suffered in motor vehicle traffic crashes. This package provides a set of 5 functions that help to analyse FARS dataset:
+
+- `fars_read()` to read CSV file and convert to tibble data frame
+- `make_filename()` to construct file name using `year`
+- `fars_read_years()` to consolidate fatalaties by month and year
+- `fars_summarize_years()` to summarize fatalaties by month and year
+- `fars_map_state()` to plot fatalities on map for gievn state and year
+
+
+## Examples
+
+Below code demonstrates examples of function usage:
+
+```{r}
+fars_read(make_filename(2015))
+fars_read_years(c(2013,2014,2015))
+fars_summarize_years(c(2013,2014,2015))
+fars_map_state(1,2015)
+
+```
+
