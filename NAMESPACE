@@ -1,5 +1,4 @@
 export(fars_read,make_filename,fars_read_years,fars_summarize_years,fars_map_state)
-importFrom(readr,read_delim)
 importFrom(dplyr,tbl_df,mutate,select,bind_rows,group_by,summarize,filter)
 importFrom(tidyr,spread)
 importFrom(maps,map)
