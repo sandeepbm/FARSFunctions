@@ -17,6 +17,6 @@ and return error else it will return tibble data frame object of input file
 This function reads a csv file and converts to a tibble data frame
 }
 \examples{
-fars_read("accident_2018.csv.bz2")
+tryCatch({fars_read("accident_2015.csv.bz2")}, error = function(e){NULL})
 
 }

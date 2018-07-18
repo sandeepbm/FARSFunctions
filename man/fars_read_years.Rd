@@ -10,9 +10,9 @@ fars_read_years(years)
 \item{years}{A numeric vector of year values for which data is required}
 }
 \value{
-If input file doesnt exist for any corresponding input year a warning 
-will be returned indicating that the input year is invalid. 
-For all valid years, a list containing month and year fields of each input 
+If input file doesnt exist for any corresponding input year a warning
+will be returned indicating that the input year is invalid.
+For all valid years, a list containing month and year fields of each input
 year is returned.
 }
 \description{
@@ -20,7 +20,7 @@ This function extracts and consolidates month and year fields from
 multiple input files where each input file contains data for 1 year
 }
 \examples{
-fars_read_years(c(2017,2018))
-fars_read_years(2018)
+fars_read_years(c(2013,2014))
+fars_read_years(2015)
 
 }

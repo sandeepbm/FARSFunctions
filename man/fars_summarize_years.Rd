@@ -12,7 +12,7 @@ fars_summarize_years(years)
 \value{
 This functions returns a tibble data frame giving counts summarized
 by month and year, where the intersection of a row representing month
-and column representing year, gives summarized counts for that particular 
+and column representing year, gives summarized counts for that particular
 month and year
 }
 \description{
@@ -20,7 +20,6 @@ This function summarizes consolidated month and year fields from
 multiple input files where each input file contains data for 1 year
 }
 \examples{
-fars_summarize_years(c(2017,2018))
-fars_summarize_years(2018)
+fars_summarize_years(c(2013,2014))
 
 }

@@ -6,12 +6,12 @@
 #' @return If input file doesnt exist, this function will stop execution
 #' and return error else it will return tibble data frame object of input file
 #'
-#' @examples 
-#' fars_read("accident_2018.csv.bz2")
-#' 
+#' @examples
+#' tryCatch({fars_read("accident_2015.csv.bz2")}, error = function(e){NULL})
+#'
 #' @importFrom readr read_csv
 #' @importFrom dplyr tbl_df
-#' 
+#'
 #' @export
 fars_read <- function(filename) {
       if(!file.exists(filename))
@@ -29,9 +29,9 @@ fars_read <- function(filename) {
 #' @param year Numeric value of year
 #' @return This function returns a string value of file name
 #'
-#' @examples 
+#' @examples
 #' make_filename(2018)
-#' 
+#'
 #' @export
 make_filename <- function(year) {
       year <- as.integer(year)
@@ -44,24 +44,25 @@ make_filename <- function(year) {
 #' multiple input files where each input file contains data for 1 year
 #'
 #' @param years A numeric vector of year values for which data is required
-#' @return If input file doesnt exist for any corresponding input year a warning 
-#' will be returned indicating that the input year is invalid. 
-#' For all valid years, a list containing month and year fields of each input 
+#' @return If input file doesnt exist for any corresponding input year a warning
+#' will be returned indicating that the input year is invalid.
+#' For all valid years, a list containing month and year fields of each input
 #' year is returned.
 #'
-#' @examples 
-#' fars_read_years(c(2017,2018))
-#' fars_read_years(2018)
-#' 
+#' @examples
+#' fars_read_years(c(2013,2014))
+#' fars_read_years(2015)
+#'
 #' @importFrom dplyr mutate select
-#' 
+#' @importFrom magrittr %>%
+#'
 #' @export
 fars_read_years <- function(years) {
       lapply(years, function(year) {
             file <- make_filename(year)
             tryCatch({
                   dat <- fars_read(file)
-                  dplyr::mutate(dat, year = year) %>% 
+                  dplyr::mutate(dat, year = year) %>%
                         dplyr::select(MONTH, year)
             }, error = function(e) {
                   warning("invalid year: ", year)
@@ -78,23 +79,28 @@ fars_read_years <- function(years) {
 #' @param years A numeric vector of year values for which data is required
 #' @return This functions returns a tibble data frame giving counts summarized
 #' by month and year, where the intersection of a row representing month
-#' and column representing year, gives summarized counts for that particular 
+#' and column representing year, gives summarized counts for that particular
 #' month and year
 #'
-#' @examples 
-#' fars_summarize_years(c(2017,2018))
-#' fars_summarize_years(2018)
-#' 
+#' @examples
+#' fars_summarize_years(c(2013,2014))
+#'
 #' @importFrom dplyr bind_rows group_by summarize
 #' @importFrom tidyr spread
-#' 
+#' @importFrom magrittr %>%
+#'
 #' @export
 fars_summarize_years <- function(years) {
+      tryCatch({
       dat_list <- fars_read_years(years)
-      dplyr::bind_rows(dat_list) %>% 
-            dplyr::group_by(year, MONTH) %>% 
+      dplyr::bind_rows(dat_list) %>%
+            dplyr::group_by(year, MONTH) %>%
             dplyr::summarize(n = n()) %>%
             tidyr::spread(year, n)
+      },warning = function(w) {
+            warning("invalid years: ", years)
+            return(NULL)
+      })
 }
 
 #' Plot of accident coordinates for given state and year on state map
@@ -112,19 +118,20 @@ fars_summarize_years <- function(years) {
 #' If no accidents are present in dataset for given state, a message is returned
 #' as "no accidents to plot"
 #'
-#' @examples 
-#' fars_map_state(1,2018)
-#' 
+#' @examples
+#' fars_map_state(1,2013)
+#'
 #' @importFrom dplyr filter
 #' @importFrom maps map
 #' @importFrom graphics points
-#' 
+#'
 #' @export
 fars_map_state <- function(state.num, year) {
       filename <- make_filename(year)
+      tryCatch({
       data <- fars_read(filename)
       state.num <- as.integer(state.num)
-      
+
       if(!(state.num %in% unique(data$STATE)))
             stop("invalid STATE number: ", state.num)
       data.sub <- dplyr::filter(data, STATE == state.num)
@@ -138,6 +145,10 @@ fars_map_state <- function(state.num, year) {
             maps::map("state", ylim = range(LATITUDE, na.rm = TRUE),
                       xlim = range(LONGITUD, na.rm = TRUE))
             graphics::points(LONGITUD, LATITUDE, pch = 46)
+      })
+      }, error = function(e) {
+            warning("invalid year: ", year)
+            return(NULL)
       })
 }
 
