@@ -12,7 +12,7 @@ test_that("Test fars_read()",{
 
 test_that("Test make_filename()",{
       c <- make_filename(2015)
-      expect_that(c,equals("accident_2015.csv.bz2"))
+      expect_equal(c,"accident_2015.csv.bz2")
 })
 
 test_that("Test fars_read_years()",{
@@ -31,7 +31,7 @@ test_that("Test fars_summarize_years()",{
 
 test_that("Test fars_map_state()",{
       m <- fars_map_state(1,2015)
-      expect_that(m,equals(NULL))
+      expect_equal(m,NULL)
       expect_that(fars_map_state(100,2015),
                   throws_error("invalid STATE number: 100"))
 })

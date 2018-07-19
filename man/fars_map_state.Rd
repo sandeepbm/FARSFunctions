@@ -25,6 +25,6 @@ This function plots coordinates represented by latitude and longitude for
 a given input state and year
 }
 \examples{
-fars_map_state(1,2013)
+tryCatch({fars_map_state(1,2013)},error=function(e){return(NULL)})
 
 }
